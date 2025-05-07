@@ -19,6 +19,31 @@ The project consists of three main components:
 - `AlumniConnectWeb/` - Web application
 - `AlumniConnectApi/` - Express.js backend API
 
+## Network Setup
+
+1. **Find Your Local IP Address**
+   ```bash
+   # On Windows
+   ipconfig
+   # Look for IPv4 Address under your active network adapter
+   
+   # On macOS/Linux
+   ifconfig
+   # or
+   ip addr
+   ```
+
+2. **Update API URL in Applications**
+   - Replace `localhost` with your local IP address in:
+     - Mobile App: Update API URL in environment configuration
+   - Example: If your local IP is 192.168.1.100, use:
+     - `http://192.168.1.100:5000` for API
+
+3. **Ensure All Devices are on Same Network**
+   - Connect all devices (PC, mobile phones) to the same WiFi network
+   - Make sure your firewall allows connections on ports 3000 and 5173
+   - Test connectivity by pinging your local IP from other devices
+
 ## Setting up the Mobile App (AlumniConnectApp)
 
 1. **Install Dependencies**
@@ -36,7 +61,7 @@ The project consists of three main components:
 
 3. **Configure Environment**
    - Make sure the backend API is running
-   - Update the API URL in the app if needed (default is http://localhost:3000)
+   - Update the API URL in the app if needed (default is `http://192.168.1.19:5000`)
 
 4. **Start the Metro Bundler**
    ```bash
@@ -68,6 +93,47 @@ The project consists of three main components:
    - Use React Native Debugger for debugging
    - Check the console for any errors
 
+## Database Setup
+
+1. **Install MongoDB**
+   - Download and install MongoDB Community Server from [MongoDB website](https://www.mongodb.com/try/download/community)
+   - Make sure MongoDB service is running on your system
+
+2. **Create Database**
+   ```bash
+   # Start MongoDB shell
+   mongosh
+
+   # Create and switch to the database
+   use alumniconnect
+
+   # Verify the database is created
+   show dbs
+   ```
+
+3. **Import Collections**
+   ```bash
+   # Navigate to the collections directory
+   cd AlumniConnectApi/MongoDb\ Collections
+
+   # Import teachers collection
+   mongoimport --db alumniconnect --collection teachers --file alumniconnect.teachers.json
+
+   # Import students collection
+   mongoimport --db alumniconnect --collection students --file alumniconnect.students.json
+   ```
+
+4. **Verify Collections**
+   ```bash
+   # In MongoDB shell
+   use alumniconnect
+   show collections
+   
+   # Verify data in collections
+   db.teachers.count()
+   db.students.count()
+   ```
+
 ## Setting up the Backend API (AlumniConnectApi)
 
 1. **Install Dependencies**
@@ -86,22 +152,8 @@ The project consists of three main components:
    - Replace the example values with your actual configuration values
    - Never commit the `.env` file to version control
 
-3. **Seed Teacher Data**
-   - Import the Postman collection to add initial teacher data:
-     - Open Postman
-     - Click "Import" button
-     - Select `alumni_connect.postman_collection.json` from the project
-   - The collection contains requests to populate the database with teacher information
-   - Run the requests in sequence to add the teacher data
-   - Make sure your API server is running before executing the requests
-   - Note: All seeded users will have "password" as their default password
-   - Users should change their password after first login
-   - To add student data from `studrecord.json`:
-     - Login with the user having moodleId: 10000000
-     - Use this account to upload and process the student records
-     - The student data will be automatically processed and added to the database
 
-4. **Start the API Server**
+3. **Start the API Server**
    ```bash
    # Development mode
    npm run dev
@@ -120,7 +172,9 @@ The project consists of three main components:
 
 2. **Configure Environment**
    - Make sure the backend API is running
-   - Update the API URL in the app if needed (default is http://localhost:3000)
+   - Update the API URL to use your local IP address (e.g., http://192.168.1.100:5000)
+   - Note: All users imported from the database will have "password" as their default password
+   - Users should change their password after first login
 
 3. **Start the Development Server**
    ```bash
