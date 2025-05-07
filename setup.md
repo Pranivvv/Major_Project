@@ -41,7 +41,7 @@ The project consists of three main components:
 
 3. **Ensure All Devices are on Same Network**
    - Connect all devices (PC, mobile phones) to the same WiFi network
-   - Make sure your firewall allows connections on ports 3000 and 5173
+   - Make sure your firewall allows connections on ports 5000 and 5173
    - Test connectivity by pinging your local IP from other devices
 
 ## Setting up the Mobile App (AlumniConnectApp)
